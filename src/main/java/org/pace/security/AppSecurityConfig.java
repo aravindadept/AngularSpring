@@ -29,10 +29,12 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 		
 	}
 	
-	/* @Override
-	    protected void configure(HttpSecurity httpSecurity) throws Exception {
-	        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
-	 }*/
+	 @Override
+	    protected void configure(HttpSecurity http) throws Exception {
+
+		 http.csrf().disable();
+		 
+	 }
 	
 /*    @Override
     protected void configure(AuthenticationManagerBuilder auth)
