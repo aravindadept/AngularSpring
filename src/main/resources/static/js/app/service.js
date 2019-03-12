@@ -72,6 +72,18 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
          	   if(typeof(data1)=='undefined'){data1="";}
          	  // console.log(type,data,data1);
             } 
+            
+            function setLocData(locvar,locdata){
+            	
+           	 logService(0,'Setting local data');
+           	 logService(0,locdata);
+                $localStorage[locvar]=locdata;
+           }
+
+           function getLocData(locvar){
+           	
+               return $localStorage[locvar];
+           }
          
             function loadSerData(url) {
             	
@@ -94,18 +106,6 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
                         }
                     );
                 return deferred.promise;
-            }
-            
-            function setLocData(locvar,locdata){
-            	
-            	 logService(0,'Setting local data');
-            	 logService(0,locdata);
-                 $localStorage[locvar]=locdata;
-            }
-
-            function getLocData(locvar){
-            	
-                return $localStorage[locvar];
             }
             
             function postService(url,data,rurl){

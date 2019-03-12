@@ -15,7 +15,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "PD_USER_DETAILS")
-@Where(clause = "UD_FLAG_STATUS<'2'")
+@Where(clause = "UD_FLAG_STATUS<2")
 public class UserInfo {
 
 	@Id

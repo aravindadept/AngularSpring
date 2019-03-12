@@ -29,12 +29,29 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 		
 	}
 	
-	 @Override
-	    protected void configure(HttpSecurity http) throws Exception {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+	 
+	        http.csrf().disable();
+	 
+	        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll()
+	        .antMatchers("/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	        .antMatchers("/api/*").access("hasRole('ROLE_ADMIN')");
+	        
+	        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
-		 http.csrf().disable();
-		 
-	 }
+	        http.authorizeRequests().and().formLogin()//
+	                .loginProcessingUrl("/logincheck") 
+	                .loginPage("/login")//
+	                .defaultSuccessUrl("/home")//
+	                .failureUrl("/login?error=true")//
+	                .usernameParameter("username")//
+	                .passwordParameter("password")
+	                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
+	 
+	    }
+	
+
 	
 /*    @Override
     protected void configure(AuthenticationManagerBuilder auth)

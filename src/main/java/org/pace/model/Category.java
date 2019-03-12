@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "PD_CATEGORY")
-@Where(clause = "C_FLAG_STATUS<'2'")
+@Where(clause = "C_FLAG_STATUS<2")
 public class Category {
 
 	@Id

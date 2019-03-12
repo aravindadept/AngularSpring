@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "PD_ROLE_MASTER")
-@Where(clause = "RM_FLAG_STATUS<'2'")
+@Where(clause = "RM_FLAG_STATUS<2")
 public class Role {
 
 	@Id
