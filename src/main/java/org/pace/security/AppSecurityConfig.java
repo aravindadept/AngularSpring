@@ -36,7 +36,7 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 	 
 	        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll()
 	        .antMatchers("/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-	        .antMatchers("/api/*").access("hasRole('ROLE_ADMIN')");
+	        .antMatchers("/api/**").access("hasRole('ROLE_ADMIN')");
 	        
 	        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
@@ -52,6 +52,20 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 	    }
 	
 
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//	    http
+//	        .sessionManagement()
+//	            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//	            .and()
+//	        .csrf().disable()
+//	        .authorizeRequests()
+//	            .antMatchers(HttpMethod.POST, "/**/authenticate").permitAll()
+//	            .antMatchers(HttpMethod.GET, "/**/get-public-key").permitAll()
+//	            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//	            .anyRequest().authenticated();
+//	}
+	
 	
 /*    @Override
     protected void configure(AuthenticationManagerBuilder auth)

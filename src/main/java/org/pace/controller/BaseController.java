@@ -44,5 +44,12 @@ public class BaseController {
 		model.addAttribute("title", "Angular");
 		return "item";
 	}
+	
+	@RequestMapping( value = "/po" , method = RequestMethod.GET)
+	public String po(ModelMap model) {
+		
+		model.addAttribute("title", "Angular");
+		return "po";
+	}
 
 }

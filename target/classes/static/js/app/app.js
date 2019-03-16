@@ -46,9 +46,28 @@ app.config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $url
 	    }
 	        
 	};	
-			
+		
+	var po= {				
+			name: 'po',
+			url: '/po',
+			templateUrl: 'po',
+			controller:'poController',
+			controllerAs:'ctrl',
+			resolve: {
+				users: function ($q, Service) {
+					localStorage.clear();
+					Service.logService(0,'Load all po');
+			        var deferred = $q.defer();
+			        Service.loadSerData('polist').then(deferred.resolve, deferred.resolve);
+			        return deferred.promise;
+				}
+		    }
+		        
+		};	
+	
 	$stateProvider.state(category);	
 	$stateProvider.state(item);
+	$stateProvider.state(po);
 		
 	$urlRouterProvider.otherwise('/');
                 
