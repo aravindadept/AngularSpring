@@ -79,7 +79,7 @@
         <i class="fas fa-times fa-4x animated rotateIn"></i>
       </div>
       <div class="modal-footer flex-center">
-        <button data-ng-click="ctrl.remove(globData.confirmData)" href="" class="btn  btn-outline-danger">Yes</button>
+        <button data-ng-click="ctrl.confirmYes(globData.confirmData)" href="" class="btn  btn-outline-danger">Yes</button>
         <button type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</button>
       </div>
 </script> 	

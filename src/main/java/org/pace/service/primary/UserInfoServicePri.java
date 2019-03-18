@@ -9,7 +9,7 @@ public interface UserInfoServicePri {
 	
 	UserInfo findByuserName(String username);
 	
-	 List<UserInfo> findAllUserInfo();
+	 List<UserInfo> findAll();
 	 
 /*	 void saveUserInfo(UserInfo userinfo);
 	 

@@ -8,9 +8,9 @@ public interface CategoryServicePri {
 	
 	 Category findBycategoryId(int id);
 	 
-	 void saveCategory(Category category);
+	 void save(Category data);
 	 
-	 void updateCategory(Category category);
+	 void update(Category data);
 	 
-	 List<Category> findAllCategory();
+	 List<Category> findAll();
 }

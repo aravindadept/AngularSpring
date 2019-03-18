@@ -5,31 +5,13 @@ app.factory('GlobData', function() {
 });
 
 
-app.factory('AuthInterceptor', ['GlobData',function(data) {  
-    return {
-    // Send the Authorization header with each request
-        'request': function(config) {
-            config.headers = config.headers || {};
-            var encodedString = btoa(data.username+':'+data.password);
-            config.headers.Authorization = 'Basic '+encodedString;
-            //console.log(config);
-           return config;
-        }
-    };
-}]);
-
-app.config(['$httpProvider', function($httpProvider) {
-	  $httpProvider.interceptors.push('AuthInterceptor');
-	}]);
-
-
 app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
         function ($localStorage, $http, $q, urls, GlobData) {
 
             var factory = {
-                loadSerData: loadSerData,
-                setLocData : setLocData,
-                getLocData : getLocData,
+            	loadData: loadData,
+                setData : setData,
+                getData : getData,
                 postService: postService,
                 putService : putService,
                 removeService : removeService,
@@ -39,6 +21,13 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
             };
          
             return factory;
+            
+            function logService(type,data,data1){
+          	   if(type==0){type="info: ";}
+          	   if(type==1){type="err: ";}
+          	   if(typeof(data1)=='undefined'){data1="";}
+          	   console.log(type,data,data1);
+             } 
             
             function modalService(murl,name,mstate,mclass,mhclass,mtitle,mclose){
             	
@@ -66,26 +55,20 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
             	$('#'+GlobData.modalName).modal({ show: true, backdrop: 'static', keyboard: false}); 
             	
             }
-            function logService(type,data,data1){
-         	   if(type==0){type="info: ";}
-         	   if(type==1){type="err: ";}
-         	   if(typeof(data1)=='undefined'){data1="";}
-         	   console.log(type,data,data1);
-            } 
             
-            function setLocData(locvar,locdata){
+            function setData(key,data){
             	
-           	 logService(0,'Setting local data');
-           	 logService(0,locdata);
-                $localStorage[locvar]=locdata;
+           	 logService(0,'Setting localStorage data');
+           	 logService(0,data);
+                $localStorage[key]=data;
            }
 
-           function getLocData(locvar){
+           function getData(key){
            	
-               return $localStorage[locvar];
+               return $localStorage[key];
            }
          
-            function loadSerData(url) {
+            function loadData(url) {
             	
             	let apiUrl=urls.BASE_API+url;
             	logService(0,apiUrl);
@@ -117,7 +100,7 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
             	var deferred=$q.defer();
             	$http.post(apiUrl,data)
             		.then(function (response){
-            					loadSerData(rurl);
+            					loadData(rurl);
             					deferred.resolve(response.data);
             				},
             				function(errResponse){
@@ -136,7 +119,7 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
             	var deferred=$q.defer();
             	$http.put(apiUrl,data)
             		.then(function (response){
-            					loadSerData(rurl);
+            					loadData(rurl);
             					deferred.resolve(response.data);
             				},
             				function(errResponse){
@@ -154,7 +137,7 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
             	var deferred=$q.defer();
             	$http.delete(apiUrl)
             		.then(function (response){
-            					loadSerData(rurl);
+            					loadData(rurl);
             					deferred.resolve(response.data);
             				},
             				function(errResponse){

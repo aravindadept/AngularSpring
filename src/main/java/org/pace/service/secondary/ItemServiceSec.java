@@ -8,9 +8,9 @@ public interface ItemServiceSec {
 	
 	 Item findByitemId(int id);
 	 
-	 void saveItem(Item item);
+	 void save(Item data);
 	 
-	 void updateItem(Item item);
+	 void update(Item data);
 	 
-	 List<Item> findAllItem();
+	 List<Item> findAll();
 }

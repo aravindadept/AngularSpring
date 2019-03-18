@@ -16,32 +16,8 @@
   <div class="card-body p-1" >
   
     <div class="panel panel-default">
-     
         <div class="panel-body">
-                <table class="table table-sm" id="datatable" >
-                    <thead>
-                    <tr class="green lighten-1">
-                     	<th class="text-left font-weight-bold">S NO</th>
-                        <th class="text-left font-weight-bold">CATEGORY NAME</th>
-                        <th class="text-center font-weight-bold">ITEM CODE</th> 
-                        <th class="text-left font-weight-bold">ITEM NAME</th>    
-                        <th class="text-right font-weight-bold">ITEM PRICE</th>                      
-                        <th class="text-center font-weight-bold">EDIT</th>
-                        <th class="text-center font-weight-bold">DELETE</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr data-ng-repeat="i in ctrl.getLocData('itemlist')">
-                    	<td class="text-left">{{$index+1}}</td>
-                        <td class="text-left">{{i.category.categoryName}}</td>
-                        <td class="text-center">{{i.itemCode}}</td>  
-                        <td class="text-left">{{i.itemName}}</td>  
-                        <td class="text-right">{{i.itemPrice}}</td>  
-                        <td class="text-center" > <button data-ng-click="ctrl.editModal(i.itemId)" type="button" class="btn btn-sm btn-warning p-1 m-0"><i class="fas fa-pen"></i></button> </td>
-                        <td class="text-center" >  <button data-ng-click="ctrl.confirmModal(i.itemId)" type="button" class="btn btn-sm btn-danger p-1 m-0"><i class="fas fa-trash-alt"></i></button></td>                
-                    </tr>
-                    </tbody>
-                </table>      
+                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getData('itemlist')"></table>
         </div>
     </div>
     
@@ -59,7 +35,6 @@
   </modal>
  </form> 
 
-
 <script type="text/ng-template" id="addedit">
 
 	       <div class="panel-body">
@@ -67,7 +42,7 @@
 	                    <div class="col-md-6">
 	                        <label for="categoryId">Category Name</label>
 	                        <select ng-model="ctrl.data.categoryId"  class="browser-default custom-select" 
-	                        ng-options="obj.categoryId as obj.categoryName for obj in  ctrl.getLocData('categorylist')">
+	                        ng-options="obj.categoryId as obj.categoryName for obj in  ctrl.getData('categorylist')">
 	                        </select> 
 	                    </div>
 	                    <div class="col-md-6">

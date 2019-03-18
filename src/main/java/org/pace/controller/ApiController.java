@@ -27,37 +27,54 @@ public class ApiController {
 	public static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
 	
-	
-	
 	@Autowired
 	UserInfoServicePri userInfoServicePri;
 	
-	
-	@RequestMapping(value="/userlist" , method = RequestMethod.GET )
-	public List<UserInfo>  userlist() {
-		
-		return userInfoServicePri.findAllUserInfo();
-	}
-	
-	@RequestMapping(value="/userlist/{username}" , method = RequestMethod.GET )
-	public UserInfo  userlist(@PathVariable("username") String username) {
-		
-		return userInfoServicePri.findByuserName(username);
-	}
-	 	
 	@Autowired
 	CategoryServicePri categoryServicePri;
 	
 	@Autowired
 	CategoryServiceSec categoryServiceSec;
 	
+	@Autowired
+	ItemServicePri itemServicePri;
+	
+	@Autowired
+	ItemServiceSec itemServiceSec;
+	
+	@Autowired
+	PoItemServicePri poItemServicePri;
+	
+	@Autowired
+	PoItemServiceSec poItemServiceSec;
+	
+	@Autowired
+	PoServicePri poServicePri;
+	
+	@Autowired
+	PoServiceSec poServiceSec;
+	
+	@RequestMapping(value="/userlist" , method = RequestMethod.GET )
+	public List<UserInfo>  userlist() {
+		
+		return userInfoServicePri.findAll();
+	}
+	
+	@RequestMapping(value="/username/{username}" , method = RequestMethod.GET )
+	public UserInfo  userlist(@PathVariable("username") String username) {
+		
+		return userInfoServicePri.findByuserName(username);
+	}
+	 	
+/*=================================================================================================================*/
+	
 	@RequestMapping(value="/categorylist" , method = RequestMethod.GET )
 	public List<Category>  category() {
 		
-		return categoryServicePri.findAllCategory();
+		return categoryServicePri.findAll();
 	}
 	
-	@RequestMapping(value="/singlecategory/{id}" , method = RequestMethod.GET )
+	@RequestMapping(value="/categoryid/{id}" , method = RequestMethod.GET )
 	public Category  category(@PathVariable("id") int id) {
 		
 		return categoryServicePri.findBycategoryId(id);
@@ -68,9 +85,9 @@ public class ApiController {
 		category.setFlagStatus(0);
 		category.setCreatedUsercode(1);				 
 		logger.info("Creating Category	: {} ",category);
-		categoryServicePri.saveCategory(category);
+		categoryServicePri.save(category);
 		
-		if(GlobalVariables.cloudFlag) { categoryServiceSec.saveCategory(category);}
+		if(GlobalVariables.cloudFlag) { categoryServiceSec.save(category);}
 			
 		HttpHeaders headers = new HttpHeaders();
 	//	headers.setLocation(ucBuilder.path("/api/userlist/{username}").buildAndExpand(user.getUsername()).toUri());
@@ -93,8 +110,8 @@ public class ApiController {
 	     currentCategory.setFlagStatus(1);	  	
 	     currentCategory.setSendFlag(0);	  	
 	     currentCategory.setModifiedUsercode(1);
-	     categoryServicePri.updateCategory(currentCategory);
-	     if(GlobalVariables.cloudFlag) { categoryServiceSec.updateCategory(currentCategory);	}
+	     categoryServicePri.update(currentCategory);
+	     if(GlobalVariables.cloudFlag) { categoryServiceSec.update(currentCategory);	}
 	        
 	     return new ResponseEntity<Category>(currentCategory, HttpStatus.OK);
 	}
@@ -114,24 +131,21 @@ public class ApiController {
 	     currentCategory.setFlagStatus(2);	  	
 	     currentCategory.setSendFlag(0);	  	
 	     currentCategory.setModifiedUsercode(1);
-	     categoryServicePri.updateCategory(currentCategory);
-	     if(GlobalVariables.cloudFlag) { categoryServiceSec.updateCategory(currentCategory);	}
+	     categoryServicePri.update(currentCategory);
+	     if(GlobalVariables.cloudFlag) { categoryServiceSec.update(currentCategory);	}
 	        
 	     return new ResponseEntity<Category>(currentCategory, HttpStatus.OK);
 	}
 	
-	@Autowired
-	ItemServicePri itemServicePri;
+/*=================================================================================================================*/
 	
-	@Autowired
-	ItemServiceSec itemServiceSec;
 	
 	@RequestMapping(value="/itemlist" , method = RequestMethod.GET )
 	public List<Item>  item() {		
-		return itemServicePri.findAllItem();
+		return itemServicePri.findAll();
 	}
 	
-	@RequestMapping(value="/singleitem/{id}" , method = RequestMethod.GET )
+	@RequestMapping(value="/itemid/{id}" , method = RequestMethod.GET )
 	public Item  item(@PathVariable("id") int id) {		
 		return itemServicePri.findByitemId(id);
 	}
@@ -141,9 +155,9 @@ public class ApiController {
 		item.setFlagStatus(0);			
 		item.setCreatedUsercode(1);	
 		logger.info("Creating item	: {} ",item);
-		itemServicePri.saveItem(item);
+		itemServicePri.save(item);
 		
-		if(GlobalVariables.cloudFlag) { itemServiceSec.saveItem(item);	}
+		if(GlobalVariables.cloudFlag) { itemServiceSec.save(item);	}
 		
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -168,8 +182,8 @@ public class ApiController {
 	     currentItem.setSendFlag(0);		
 	     currentItem.setModifiedUsercode(1);
 		 
-	     itemServicePri.updateItem(currentItem);
-	     if(GlobalVariables.cloudFlag) { itemServiceSec.updateItem(currentItem);	}
+	     itemServicePri.update(currentItem);
+	     if(GlobalVariables.cloudFlag) { itemServiceSec.update(currentItem);	}
 	        
 	     return new ResponseEntity<Item>(currentItem, HttpStatus.OK);
 	}
@@ -189,11 +203,51 @@ public class ApiController {
 	     currentItem.setSendFlag(0);		
 	     currentItem.setModifiedUsercode(1);
 		 
-	     itemServicePri.updateItem(currentItem);
-	     if(GlobalVariables.cloudFlag) { itemServiceSec.updateItem(currentItem);	}
+	     itemServicePri.update(currentItem);
+	     if(GlobalVariables.cloudFlag) { itemServiceSec.update(currentItem);	}
 	        
 	     return new ResponseEntity<Item>(currentItem, HttpStatus.OK);
 	}
+	
+	
+/*=================================================================================================================*/
+	
+	@RequestMapping(value="/polist" , method = RequestMethod.GET )
+	public List<PoItem>  poItem() {		
+		return poItemServicePri.findAll();
+	}
+	
+	@RequestMapping(value="/poid/{id}" , method = RequestMethod.GET )
+	public PoItem  poItem(@PathVariable("id") int id) {		
+		return poItemServicePri.findByid(id);
+	}
+	
+	@RequestMapping(value="/createpo" ,  method = RequestMethod.POST)
+	public ResponseEntity<?> createPo( @RequestBody PoItem poitem ) {
+		poitem.setId(1);
+		poitem.setFlagStatus(0);			
+		poitem.setCreatedUsercode(1);	
+		
+		Po po =new Po();
+		po.setId(1);
+		po.setAmount(poitem.getAmount());
+		po.setFlagStatus(0);			
+		po.setCreatedUsercode(1);	
+		
+		logger.info("Creating poitem	: {} ",poitem);
+		poItemServicePri.save(poitem);
+		poServicePri.save(po);
+		
+		if(GlobalVariables.cloudFlag) { 
+			poItemServiceSec.save(poitem);
+			poServiceSec.save(po);
+			
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+	
 	
 
 	

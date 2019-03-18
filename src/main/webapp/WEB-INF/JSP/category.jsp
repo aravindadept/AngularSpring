@@ -17,7 +17,7 @@
   
     <div class="panel panel-default">
         <div class="panel-body">
-                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getLocData('categorylist')"></table>
+                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getData('categorylist')"></table>
         </div>
     </div>
   </div>

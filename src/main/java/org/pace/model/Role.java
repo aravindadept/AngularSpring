@@ -45,7 +45,7 @@ public class Role {
 	private LocalDateTime modifieddDateTime;			
 
 	@OneToMany(mappedBy="role")
-	private Collection<UserInfo> user;
+	private Collection<UserInfo> userInfo;
 	
 	
 	public int getRoleId() {
