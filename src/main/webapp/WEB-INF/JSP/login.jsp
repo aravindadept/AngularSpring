@@ -23,6 +23,7 @@
 <form class="text-center border border-light p-5 white" action="logincheck" method="post">
 
     <p class="h4 mb-4">Sign in</p>
+     <p class="h4 mb-2 text-danger">${SPRING_SECURITY_LAST_EXCEPTION.message}</p>
 
     <!-- Email -->
     <input type="text" id="username"  name="username" class="form-control mb-4" placeholder="Username">

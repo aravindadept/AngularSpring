@@ -8,7 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +23,7 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		
 		provider.setUserDetailsService(userService);
-		provider.setPasswordEncoder( NoOpPasswordEncoder.getInstance());
+		provider.setPasswordEncoder( new BCryptPasswordEncoder());
 		
 		return provider;
 		
@@ -34,8 +34,8 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 	 
 	        http.csrf().disable();
 	 
-	        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll()
-	        .antMatchers("/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	        http.authorizeRequests().antMatchers("/login", "/logout").permitAll()
+	        .antMatchers("/","/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	        .antMatchers("/api/**").access("hasRole('ROLE_ADMIN')");
 	        
 	        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
@@ -47,7 +47,7 @@ public class AppSecurityConfig  extends WebSecurityConfigurerAdapter {
 	                .failureUrl("/login?error=true")//
 	                .usernameParameter("username")//
 	                .passwordParameter("password")
-	                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
+	                .and().logout().invalidateHttpSession(true).clearAuthentication(true).logoutUrl("/logout").logoutSuccessUrl("/login");
 	 
 	    }
 	
