@@ -7,6 +7,8 @@ import org.pace.model.PoItem;
 public interface PoItemServicePri {
 	
 	PoItem findByid(int id);
+	
+	PoItem findBypoId(int poId);
 	 
 	 void save(PoItem data);
 	 

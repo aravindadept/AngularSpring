@@ -95,7 +95,8 @@
         <script type="text/javascript" src="js/app/app.js"></script>
         <script type="text/javascript" src="js/app/directives.js"></script>
         <script type="text/javascript" src="js/app/service.js"></script>
-        <script type="text/javascript" src="js/app/controller.js"></script>
+        <script type="text/javascript" src="js/app/controllermas.js"></script>
+        <script type="text/javascript" src="js/app/controllerinv.js"></script>
         <script type="text/javascript" src="js/app/script.js"></script>
     </body>
 </html>

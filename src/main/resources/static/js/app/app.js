@@ -77,7 +77,8 @@ app.config(['$stateProvider', '$urlRouterProvider',function($stateProvider, $url
 					localStorage.clear();
 					Service.logService(0,'Load all po');
 			        var deferred = $q.defer();
-			        Service.loadData('polist').then(deferred.resolve, deferred.resolve);
+			        Service.loadData('poitemlist').then(deferred.resolve, deferred.resolve);
+			        Service.loadData('itemlist').then(deferred.resolve, deferred.resolve);
 			        return deferred.promise;
 				}
 		    }

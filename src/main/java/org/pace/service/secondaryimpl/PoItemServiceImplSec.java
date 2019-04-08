@@ -19,6 +19,10 @@ public class PoItemServiceImplSec implements PoItemServiceSec {
     public PoItem findByid(int id) {
         return poItemRepoSec.findByid(id);
     }
+    
+    public PoItem findBypoId(int id) {
+        return poItemRepoSec.findBypoId(id);
+    }
            
     public List<PoItem> findAll(){    	
     	return poItemRepoSec.findAll();    	

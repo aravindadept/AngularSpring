@@ -8,12 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
@@ -24,8 +20,12 @@ import org.hibernate.annotations.Where;
 public class PoItem {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "PI_ID")
 	private int id;			
+	
+	@Column(name = "PI_PO_ID")
+	private int poId;		
 	
 	@Column(name = "PI_TRAN_DATE", updatable = false, columnDefinition="DATETIME")
 	@CreationTimestamp
@@ -63,8 +63,15 @@ public class PoItem {
 	}
 	
 	public void setId(int id) {
-		
 		this.id=id;
+	}
+	
+	public int getPoId() {
+		return poId;
+	}
+	
+	public void setPoId(int poId) {
+		this.poId=poId;
 	}
 	
 	public LocalDate getTranDate() {

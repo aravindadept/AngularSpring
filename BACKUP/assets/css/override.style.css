@@ -1,0 +1,22 @@
+@charset "UTF-8";
+.dataTables_wrapper .dataTables_length {
+float: right;
+}
+.mt-5{
+	
+	margin-top:5rem; 
+}
+
+.mt-3{
+	
+	margin-top:3rem; 
+}
+
+.p-2{
+	
+	padding: 2rem;
+}
+.pt-5{
+	
+	padding-top:5rem; 
+}

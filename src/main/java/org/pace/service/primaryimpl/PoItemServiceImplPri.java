@@ -20,6 +20,10 @@ public class PoItemServiceImplPri implements PoItemServicePri {
         return poItemRepoPri.findByid(id);
     }
            
+    public PoItem findBypoId(int poId) {
+        return poItemRepoPri.findBypoId(poId);
+    }
+    
     public List<PoItem> findAll(){    	
     	return poItemRepoPri.findAll();    	
     }

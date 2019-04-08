@@ -17,7 +17,7 @@
   
     <div class="panel panel-default">
         <div class="panel-body">
-                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getData('polist')"></table>
+                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getData('poitemlist')"></table>
         </div>
     </div>
     
@@ -30,33 +30,40 @@
   <modal  name="globData.modalName"  modal-class="globData.modalClass" 
 	 	  header-class="globData.modalHeaderClass" header-title="globData.modalTitle" body="globData.modalBody" close-btn="globData.modalClose">
 	 	 
-	 	  <div ng-include="globData.modalUrl"></div>
+	 	  <div  ng-include="globData.modalUrl"></div>
 	
   </modal>
  </form> 
 
-<script type="text/ng-template" id="addedit">
+<script type="text/ng-template" id="addedit" >
 
-	       <div class="panel-body">
-	                 <div class="row">
-	                    <div class="col-md-6">
-	                      <label for="itemCode">Item Code</label>
-							<input type="text" ng-model="ctrl.data.itemCode" id="itemCode" class="form-control">
+	       <div class="panel-body" >
+
+	       			  <div class="row mb-2">
+						 <button ng-click="ctrl.addRow()" type="button" class="btn btn-primary btn-sm">ADD ITEM</button>
+ 						 <button ng-disabled="dynamicData.length==0" ng-click="ctrl.removeRow()" type="button" class="btn btn-danger btn-sm">REMOVE ITEM</button>
+			     	  </div>
+	                 <div class="row" data-ng-repeat="x in dynamicData track by $index">
+	                    <div class="col-md-4">
+        				   <label for="categoryId">Item Name</label>
+	                        <select ng-model="x.itemCode"  class="browser-default custom-select" 
+	                        ng-options="obj.itemCode as obj.itemName for obj in  ctrl.getData('itemlist')">
+	                        </select> 
 	                    </div>
-	                    <div class="col-md-6">
+	                    <div class="col-md-4">
 	                      <label for="itemPrice">Item Price</label>
-							<input type="text" ng-model="ctrl.data.itemPrice" id="itemPrice" class="form-control">
+							<input type="text" ng-model="x.itemPrice" id="itemPrice" class="form-control">
 	                    </div>
-	                    <div class="col-md-6">
+	                    <div class="col-md-4">
 	                      <label for="itemPrice">Amount</label>
-							<input type="text" ng-model="ctrl.data.amount" id="amount" class="form-control">
+							<input type="text" ng-model="x.amount" id="amount" class="form-control">
 	                    </div>
 	                 </div>    
-	                 <div class="row" style="float:right" >
+	                 <div class="row float-right" >
 			      	  <button ng-disabled="dataForm.$invalid || dataForm.$pristine" type="submit" class="btn btn-primary btn-sm" >SUBMIT</button>
 			      	  <button ng-show="globData.modalState==0" ng-disabled="dataForm.$pristine" ng-click="ctrl.reset()" type="button" class="btn btn-warning btn-sm">RESET</button>
 			       </div>
 	           </div>  
 
-</script>
+  </script>  
  

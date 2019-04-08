@@ -1,14 +1,12 @@
 package org.pace.repositories.primary;
 
-import org.pace.model.PoItem;
+import org.pace.model.Max;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PoItemRepoPri extends JpaRepository <PoItem,Long>{
+public interface MaxRepoPri extends JpaRepository <Max,Long>{
 	
-	PoItem findByid(int id);	
-	
-	PoItem findBypoId(int id);	
+	Max findByid(int id);	
 
 }

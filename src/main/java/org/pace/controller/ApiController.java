@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,11 @@ public class ApiController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
+	@Autowired
+	MaxServicePri maxServicePri;
+	
+	@Autowired
+	MaxServiceSec maxServiceSec;
 	
 	@Autowired
 	UserInfoServicePri userInfoServicePri;
@@ -212,44 +219,55 @@ public class ApiController {
 	
 /*=================================================================================================================*/
 	
-	@RequestMapping(value="/polist" , method = RequestMethod.GET )
+	@RequestMapping(value="/poitemlist" , method = RequestMethod.GET )
 	public List<PoItem>  poItem() {		
 		return poItemServicePri.findAll();
 	}
 	
-	@RequestMapping(value="/poid/{id}" , method = RequestMethod.GET )
+	@RequestMapping(value="/poitemid/{id}" , method = RequestMethod.GET )
 	public PoItem  poItem(@PathVariable("id") int id) {		
 		return poItemServicePri.findByid(id);
 	}
 	
-	@RequestMapping(value="/createpo" ,  method = RequestMethod.POST)
-	public ResponseEntity<?> createPo( @RequestBody PoItem poitem ) {
-		poitem.setId(1);
-		poitem.setFlagStatus(0);			
-		poitem.setCreatedUsercode(1);	
+	@RequestMapping(value="/createpoitem" ,  method = RequestMethod.POST)
+	public ResponseEntity<?> createPo( @RequestBody List<PoItem> list ) {
+
+		int maxValue=000;
+		double totalAmt=0;
+		
+		Max max=maxServicePri.findByid(1);
+		maxValue=max.getMaxValue();
+		
+		max.setMaxValue(maxValue+1);
+		maxServicePri.update(max);
+		
+		for (PoItem poitem : list) {
+
+			poitem.setPoId(maxValue);
+			poitem.setFlagStatus(0);			
+			poitem.setCreatedUsercode(1);	
+			
+			totalAmt+=poitem.getAmount();
+			
+			poItemServicePri.save(poitem);
+			
+			if(GlobalVariables.cloudFlag) {  poItemServiceSec.save(poitem); }
+		}
 		
 		Po po =new Po();
-		po.setId(1);
-		po.setAmount(poitem.getAmount());
+		po.setId(maxValue);
+		po.setAmount(totalAmt);
 		po.setFlagStatus(0);			
 		po.setCreatedUsercode(1);	
 		
-		logger.info("Creating poitem	: {} ",poitem);
-		poItemServicePri.save(poitem);
-		poServicePri.save(po);
+		logger.info("Creating Po	: {} ",po);
 		
-		if(GlobalVariables.cloudFlag) { 
-			poItemServiceSec.save(poitem);
-			poServiceSec.save(po);
-			
-		}
+		poServicePri.save(po);
+		poServiceSec.save(po);
 		
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
-	
-	
-
 	
 
 		
