@@ -2,7 +2,8 @@ package org.pace.security;
 
 import java.util.Arrays;
 
-import org.pace.controller.BaseController;
+import javax.servlet.http.HttpSession;
+
 import org.pace.model.UserInfo;
 import org.pace.service.primary.UserInfoServicePri;
 import org.slf4j.Logger;
@@ -21,7 +22,8 @@ public class UserCheckService implements UserDetailsService {
 	
 	public static final Logger logger = LoggerFactory.getLogger(UserCheckService.class);
 	
-	
+	@Autowired HttpSession session; //autowiring session
+	 
 	@Autowired
 	private UserInfoServicePri userInfoServicePri;
 	
@@ -37,6 +39,10 @@ public class UserCheckService implements UserDetailsService {
 		}
 		
 		if(dBuserName == null){ throw new UsernameNotFoundException("User not authorized.");}
+		
+		    session.setAttribute("userId", activeUserInfo.getUserId());
+		    
+		    logger.info("Session userId==> "+session.getAttribute("userId"));
 		
 		    GrantedAuthority authority = new SimpleGrantedAuthority(activeUserInfo.getRole().getRoleName());
 		    

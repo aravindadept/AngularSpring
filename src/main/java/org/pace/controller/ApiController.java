@@ -3,6 +3,8 @@ package org.pace.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.pace.configuration.GlobalVariables;
@@ -28,6 +30,8 @@ import org.pace.custom.CustomErrorType;
 public class ApiController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(ApiController.class);
+	
+	@Autowired HttpSession session; //autowiring session
 	
 	@Autowired
 	MaxServicePri maxServicePri;
@@ -90,8 +94,11 @@ public class ApiController {
 	
 	@RequestMapping(value="/createcategory" ,  method = RequestMethod.POST)
 	public ResponseEntity<?> createCategory( @RequestBody Category category ,UriComponentsBuilder ucBuilder) {
+		
+		int  userId=(Integer)session.getAttribute("userId");
+		
 		category.setFlagStatus(0);
-		category.setCreatedUsercode(1);				 
+		category.setCreatedUsercode(userId);				 
 		logger.info("Creating Category	: {} ",category);
 		categoryServicePri.save(category);
 		
@@ -105,6 +112,7 @@ public class ApiController {
 	@RequestMapping(value="/updatecategory/{id}" , method = RequestMethod.PUT)
 	public ResponseEntity<?> updateCategory(@PathVariable("id") int id, @RequestBody Category category) {
 		
+		int  userId=(Integer)session.getAttribute("userId");
 		 logger.info("Updating category with id {}", id);
 		 
 		 Category currentCategory = categoryServicePri.findBycategoryId(id);
@@ -117,7 +125,7 @@ public class ApiController {
 	     currentCategory.setCategoryName(category.getCategoryName());
 	     currentCategory.setFlagStatus(1);	  	
 	     currentCategory.setSendFlag(0);	  	
-	     currentCategory.setModifiedUsercode(1);
+	     currentCategory.setModifiedUsercode(userId);
 	     categoryServicePri.update(currentCategory);
 	     if(GlobalVariables.cloudFlag) { categoryServiceSec.update(currentCategory);	}
 	        
@@ -126,6 +134,8 @@ public class ApiController {
 	
 	@RequestMapping(value="/removecategory/{id}" , method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteCategory(@PathVariable("id") int id ) {
+		
+		int userId=(Integer)session.getAttribute("userId");
 		
 		 logger.info("Deleting category with id {}", id);
 		 
@@ -138,7 +148,7 @@ public class ApiController {
 	 
 	     currentCategory.setFlagStatus(2);	  	
 	     currentCategory.setSendFlag(0);	  	
-	     currentCategory.setModifiedUsercode(1);
+	     currentCategory.setModifiedUsercode(userId);
 	     categoryServicePri.update(currentCategory);
 	     if(GlobalVariables.cloudFlag) { categoryServiceSec.update(currentCategory);	}
 	        
@@ -160,8 +170,11 @@ public class ApiController {
 	
 	@RequestMapping(value="/createitem" ,  method = RequestMethod.POST)
 	public ResponseEntity<?> createItem( @RequestBody Item item ,UriComponentsBuilder ucBuilder) {
+		
+		int userId=(Integer)session.getAttribute("userId");
+		
 		item.setFlagStatus(0);			
-		item.setCreatedUsercode(1);	
+		item.setCreatedUsercode(userId);	
 		logger.info("Creating item	: {} ",item);
 		itemServicePri.save(item);
 		
@@ -173,6 +186,8 @@ public class ApiController {
 	
 	@RequestMapping(value="/updateitem/{id}" , method = RequestMethod.PUT)
 	public ResponseEntity<?> updateItem(@PathVariable("id") int id, @RequestBody Item item) {
+		
+		int userId=(Integer)session.getAttribute("userId");
 		
 		 logger.info("Updating Item with id {}", id);		 
 		 Item currentItem = itemServicePri.findByitemId(id);
@@ -188,7 +203,7 @@ public class ApiController {
 	     currentItem.setItemPrice(item.getItemPrice());
 	     currentItem.setFlagStatus(1);		
 	     currentItem.setSendFlag(0);		
-	     currentItem.setModifiedUsercode(1);
+	     currentItem.setModifiedUsercode(userId);
 		 
 	     itemServicePri.update(currentItem);
 	     if(GlobalVariables.cloudFlag) { itemServiceSec.update(currentItem);	}
@@ -198,6 +213,8 @@ public class ApiController {
 	
 	@RequestMapping(value="/removeitem/{id}" , method = RequestMethod.DELETE)
 	public ResponseEntity<?> removeItem(@PathVariable("id") int id) {
+		
+		int userId=(Integer)session.getAttribute("userId");
 		
 		 logger.info("Updating Item with id {}", id);		 
 		 Item currentItem = itemServicePri.findByitemId(id);
@@ -209,7 +226,7 @@ public class ApiController {
 	 	     
 	     currentItem.setFlagStatus(2);		
 	     currentItem.setSendFlag(0);		
-	     currentItem.setModifiedUsercode(1);
+	     currentItem.setModifiedUsercode(userId);
 		 
 	     itemServicePri.update(currentItem);
 	     if(GlobalVariables.cloudFlag) { itemServiceSec.update(currentItem);	}
@@ -246,6 +263,8 @@ public class ApiController {
 	@RequestMapping(value="/createpo" ,  method = RequestMethod.POST)
 	public ResponseEntity<?> createPo( @RequestBody List<PoItem> itemList ) {
 
+		int userId=(Integer)session.getAttribute("userId");
+		
 		int maxValue=000;
 		double totalAmt=0;
 		
@@ -259,7 +278,7 @@ public class ApiController {
 		for (PoItem poitem : itemList) {
 			poitem.setPoId(maxValue);
 			poitem.setFlagStatus(0);			
-			poitem.setCreatedUsercode(1);	
+			poitem.setCreatedUsercode(userId);	
 			totalAmt+=poitem.getAmount();
 		//	poItemServicePri.save(poitem); //	if(GlobalVariables.cloudFlag) {  poItemServiceSec.save(poitem); }
 		}
@@ -268,7 +287,7 @@ public class ApiController {
 		po.setAmount(totalAmt);
 		po.setFlagStatus(0);	
 		po.setPoItem(itemList);
-		po.setCreatedUsercode(1);	
+		po.setCreatedUsercode(userId);	
 		
 		logger.info("Creating Po	: {} ",po);
 		poServicePri.save(po);
@@ -281,10 +300,12 @@ public class ApiController {
 	@RequestMapping(value="/updatepo" ,  method = RequestMethod.PUT)
 	public ResponseEntity<?> updatePo( @RequestBody List<PoItem> itemList ) {
 
+		int userId=(Integer)session.getAttribute("userId");
+		
 		double totalAmt=0;
 		for (PoItem poitem : itemList) {
 			poitem.setFlagStatus(0);			
-			poitem.setModifiedUsercode(1);	
+			poitem.setModifiedUsercode(userId);	
 			totalAmt+=poitem.getAmount();
 		}
 
@@ -293,9 +314,9 @@ public class ApiController {
 		po.setAmount(totalAmt);
 		po.setFlagStatus(0);	
 		po.setPoItem(itemList);
-		po.setModifiedUsercode(1);	
+		po.setModifiedUsercode(userId);	
 		
-		logger.info("Creating Po	: {} ",po);
+		logger.info("Updating Po	: {} ",po);
 		
 		poServicePri.save(po);
 		if(GlobalVariables.cloudFlag) { poServiceSec.save(po);}
@@ -307,16 +328,18 @@ public class ApiController {
 	@RequestMapping(value="/removepo/{id}" , method = RequestMethod.DELETE)
 	public ResponseEntity<?> removePo(@PathVariable("id") int id) {
 		
-		 logger.info("Updating Item with id {}", id);		 
+		int userId=(Integer)session.getAttribute("userId");
+		
+		 logger.info("Removing Po with id {}", id);		 
 		 Po currentPo = poServicePri.findByid(id);
 		 
 	     if (currentPo == null) {
-	          logger.error("Unable to update. Item with id {} not found.", id);
-	          return new ResponseEntity(new CustomErrorType("Unable to update. Item with id " + id + " not found."),HttpStatus.NOT_FOUND);
+	          logger.error("Unable to update. Po with id {} not found.", id);
+	          return new ResponseEntity(new CustomErrorType("Unable to update. Po with id " + id + " not found."),HttpStatus.NOT_FOUND);
 	     }
 	 	     
 	     currentPo.setFlagStatus(2);		
-	     currentPo.setModifiedUsercode(1);
+	     currentPo.setModifiedUsercode(userId);
 		 
 	     poServicePri.update(currentPo);
 	     if(GlobalVariables.cloudFlag) { poServiceSec.update(currentPo);	}
