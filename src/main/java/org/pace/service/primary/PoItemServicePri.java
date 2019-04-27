@@ -8,7 +8,7 @@ public interface PoItemServicePri {
 	
 	PoItem findByid(int id);
 	
-	PoItem findBypoId(int poId);
+	List<PoItem> findBypoId(int poId);
 	 
 	 void save(PoItem data);
 	 

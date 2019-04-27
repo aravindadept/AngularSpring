@@ -8,7 +8,7 @@ public interface PoItemServiceSec {
 	
 	PoItem findByid(int id);
 	
-	PoItem findBypoId(int id);
+	List<PoItem> findBypoId(int id);
 	 
 	 void save(PoItem data);
 	 

@@ -50,7 +50,7 @@ public class UserInfo {
 	private LocalDateTime modifieddDateTime;
 	
 	@ManyToOne
-	@JoinColumn(name="UD_ROLE_ID", insertable = false, updatable = false)
+	@JoinColumn(name="UD_ROLE_ID",referencedColumnName="RM_ROLE_ID", insertable = false, updatable = false)
 	private Role role;
 	
 	public int getUserId() {

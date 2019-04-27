@@ -2,18 +2,21 @@ package org.pace.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
@@ -50,8 +53,15 @@ public class Po {
 	@UpdateTimestamp
 	private LocalDateTime modifieddDateTime;
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
+	@JoinColumn(name="PI_PO_ID",referencedColumnName="PO_ID")
+	private List<PoItem> poItem;
 
-
+/*	 @OneToMany(mappedBy = "po")
+	    protected List<PoItem> poItem;*/
+	 
+	 
 	public int getId() {
 		return id;
 	}
@@ -104,6 +114,16 @@ public class Po {
 
 	public LocalDateTime getModifieddDateTime() {
 		return modifieddDateTime;
+	}
+	
+	public List<PoItem> getPoItem() {
+		
+		return poItem;
+	}
+	
+	public void setPoItem(List<PoItem> poItem) {
+		
+		this.poItem=poItem;
 	}
 
 }

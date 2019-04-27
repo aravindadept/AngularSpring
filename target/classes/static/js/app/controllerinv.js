@@ -4,7 +4,8 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 	
 	
 	var self = this;
-	var ctrlName="poitem";
+	var ctrlName="po";
+	var ctrlName1="poItem";
 	scope.globData=GlobData;
 	scope.ctrlData={};
 	scope.dynamicData =[];
@@ -25,6 +26,7 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 	self.confirmYes=confirmYes;
 	self.addRow=addRow;
 	self.removeRow=removeRow;
+	self.itemChange=itemChange;
 	
 	var tableVH="30vh";
 	var viWidth=$(window).width();
@@ -34,23 +36,21 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
     scope.dataTableOptions = {
         columns: [
             { title: "S NO" },
+            { title: "PO ID" },
             { title: "TRAN DATE" },
-            { title: "ITEM CODE"},
-            { title: "ITEM NAME"},
-            { title: "ITEM PRICE"},
             { title: "AMOUNT"},
             { title: "EDIT" },
             { title: "DELETE" }
         ],
         columnMap: function (p,i) { 
-            return [  i+1, p.tranDate, p.itemCode, p.itemCode, p.itemPrice, p.amount,
-            	'<button data-ng-click="ctrl.editModal('+p.id+')" type="button" class="btn btn-sm btn-warning p-1 m-0"><i class="fas fa-pen"></i></button>',
+            return [  i+1,p.id, p.tranDate, p.amount,
+            	'<button data-ng-click="ctrl.editModal('+i+')" type="button" class="btn btn-sm btn-warning p-1 m-0"><i class="fas fa-pen"></i></button>',
             	'<button data-ng-click="ctrl.confirmModal('+p.id+')" type="button" class="btn btn-sm btn-danger p-1 m-0"><i class="fas fa-trash-alt"></i></button>' ]
         },
         order: [[ 0, "asc" ]],
         columnDefs: [
-        	  { targets: 5 , orderable: false },
-        	  { targets: 6 , orderable: false }
+        	  { targets: 4 , orderable: false },
+        	  { targets: 5 , orderable: false }
         	],
         scrollY:tableVH,
         scrollCollapse: true,
@@ -87,8 +87,8 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 		Service.postService('create'+ctrlName,data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' created successfully');
-				self.getData(ctrlName+"list");						
-				self.data={};
+				self.getData(ctrlName1+"list");						
+				scope.dynamicData=[];
 				scope.dataForm.$setPristine();
 				self.closeModal();
 			},
@@ -98,11 +98,11 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 		)		
 	}
 	function update(data){		
-		Service.putService('update'+ctrlName+'/'+data.categoryId,data,ctrlName+'list').then(
+		Service.putService('update'+ctrlName+'/',data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Updated successfully');
-				self.getData(ctrlName+'list');						
-				self.data={};
+				self.getData(ctrlName1+'list');						
+				scope.dynamicData=[];
 				scope.dataForm.$setPristine();
 				self.closeModal();
 			},
@@ -115,8 +115,7 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 		Service.removeService('remove'+ctrlName+'/'+id,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Removed successfully');
-				self.getData(ctrlName+'list');						
-				self.data={};
+				self.getData(ctrlName1+'list');						
 				scope.dataForm.$setPristine();
 				self.closeModal();
 			},
@@ -132,22 +131,17 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 	
 	function addModal(){
 		
-		self.data={};
+		scope.dynamicData=[];
 		var title=ctrlName.toUpperCase()+' ADD';
     	Service.modalService('addedit','modal',0,'modal-fluid','green lighten-1 align-middle p-2',title,true);
 	}
-	function editModal(id){
+	function editModal(index){
 		
-		let temp=ctrlName+'id/'+id;
-		
-	    Service.loadData(temp).then(function(){
-	    	
-	    	self.data=self.getData(temp);
+	    	self.data=self.getData('polist')[index].poItem;
+	    	log(0,'editdata',self.data)
+	    	scope.dynamicData=self.data;
 			var title=ctrlName.toUpperCase()+' EDIT';
-			
 	    	Service.modalService('addedit','modal',1,'modal-fluid','green lighten-1 align-middle p-2',title,true);
-	    }
-	    )
 	}
 	
 	function closeModal(){  $('#'+scope.globData.modalName).modal('hide'); }
@@ -157,14 +151,26 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 	function confirmYes(data){  self.remove(data);}
 	
 	function addRow(){
-		var obj={};
-		obj.itemCode=self.getData('itemlist')[0].itemCode;
+		var obj={itemQty:"1"};
+		var itemArr=self.getData('itemlist');
+		
+		//obj.itemList=itemArr;
+		obj.itemCode=itemArr[0].itemCode;
+		obj.itemPrice=itemArr[0].itemPrice;
 		scope.dynamicData.push(obj);
 	}
 	
 	function removeRow(){
 		
 		scope.dynamicData.pop();
+		
+	}
+	
+	function itemChange(obj){
+		
+		obj.itemList.forEach(function(item){
+			if(item.itemCode==obj.itemCode){ obj.itemPrice=item.itemPrice;}
+		})
 		
 	}
    

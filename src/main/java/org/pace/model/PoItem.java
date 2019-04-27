@@ -8,8 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
@@ -34,6 +37,9 @@ public class PoItem {
 	@Column(name = "PI_ITEM_CODE")
 	private String itemCode;
 	
+	@Column(name = "PI_ITEM_QTY")
+	private int itemQty;
+	
 	@Column(name = "PI_ITEM_PRICE")
 	private double itemPrice;
 	
@@ -56,6 +62,11 @@ public class PoItem {
 	@Column(name = "PI_MODIFIED_DT", insertable=false, columnDefinition="DATETIME")
 	@UpdateTimestamp
 	private LocalDateTime modifieddDateTime;
+	
+/*	  @ManyToOne
+	    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+	    @JoinColumn(name="PO_ID")
+	    protected Po po;*/
 	
 
 	public int getId() {
@@ -86,6 +97,15 @@ public class PoItem {
 		this.itemCode = itemCode;
 	}
 
+	public int getItemQty() {
+		return itemQty;
+	}
+	
+	public void setItemQty(int itemQty) {
+		this.itemQty=itemQty;
+	}
+	
+	
 	public double getItemPrice() {
 		return itemPrice;
 	}

@@ -17,7 +17,7 @@
   
     <div class="panel panel-default">
         <div class="panel-body">
-                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getData('poitemlist')"></table>
+                <table class="table table-sm"   datatable options="dataTableOptions" tabledata="ctrl.getData('polist')"></table>
         </div>
     </div>
     
@@ -40,23 +40,27 @@
 	       <div class="panel-body" >
 
 	       			  <div class="row mb-2">
-						 <button ng-click="ctrl.addRow()" type="button" class="btn btn-primary btn-sm">ADD ITEM</button>
- 						 <button ng-disabled="dynamicData.length==0" ng-click="ctrl.removeRow()" type="button" class="btn btn-danger btn-sm">REMOVE ITEM</button>
+						 <button ng-hide="globData.modalState==1" ng-click="ctrl.addRow()" type="button" class="btn btn-primary btn-sm">ADD ITEM</button>
+ 						 <button ng-hide="globData.modalState==1" ng-disabled="dynamicData.length==0" ng-click="ctrl.removeRow()" type="button" class="btn btn-danger btn-sm">REMOVE ITEM</button>
 			     	  </div>
 	                 <div class="row" data-ng-repeat="x in dynamicData track by $index">
-	                    <div class="col-md-4">
+	                    <div class="col-md-3">
         				   <label for="categoryId">Item Name</label>
-	                        <select ng-model="x.itemCode"  class="browser-default custom-select" 
-	                        ng-options="obj.itemCode as obj.itemName for obj in  ctrl.getData('itemlist')">
+	                        <select ng-model="x.itemCode" ng-change="ctrl.itemChange(x)" class="browser-default custom-select" 
+	                        ng-options="obj.itemCode as obj.itemName for obj in ctrl.getData('itemlist')">
 	                        </select> 
 	                    </div>
-	                    <div class="col-md-4">
-	                      <label for="itemPrice">Item Price</label>
-							<input type="text" ng-model="x.itemPrice" id="itemPrice" class="form-control">
+        				<div class="col-md-3">
+	                      <label for="itemQty">Item Quantity</label>
+							<input type="text"  ng-model="x.itemQty" id="itemQty" class="form-control" valid-number>
 	                    </div>
-	                    <div class="col-md-4">
-	                      <label for="itemPrice">Amount</label>
-							<input type="text" ng-model="x.amount" id="amount" class="form-control">
+	                    <div class="col-md-3">
+	                      <label for="itemPrice">Item Price</label>
+							<input type="text" ng-model="x.itemPrice" id="itemPrice" class="form-control"  ng-readonly="true">
+	                    </div>
+	                    <div class="col-md-3">
+	                      <label for="amount">Amount</label>
+							<input type="text"  ng-model="x.amount" id="amount" ng-bind="x.amount=x.itemQty*x.itemPrice"   class="form-control" ng-readonly="true" >
 	                    </div>
 	                 </div>    
 	                 <div class="row float-right" >

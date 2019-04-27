@@ -1,5 +1,6 @@
 package org.pace.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -225,50 +226,102 @@ public class ApiController {
 	}
 	
 	@RequestMapping(value="/poitemid/{id}" , method = RequestMethod.GET )
-	public PoItem  poItem(@PathVariable("id") int id) {		
-		return poItemServicePri.findByid(id);
+	public List<PoItem>  poItem(@PathVariable("id") int id) {		
+		return poItemServicePri.findBypoId(id);
 	}
 	
-	@RequestMapping(value="/createpoitem" ,  method = RequestMethod.POST)
-	public ResponseEntity<?> createPo( @RequestBody List<PoItem> list ) {
+	
+
+/*=================================================================================================================*/
+	
+	@RequestMapping(value="/polist" , method = RequestMethod.GET )
+	public List<Po>  poList() {		
+		return poServicePri.findAll();
+	}
+	
+	@RequestMapping(value="/poid/{id}" , method = RequestMethod.GET )
+	public Po  poId(@PathVariable("id") int id) {		
+		return poServicePri.findByid(id);
+	}
+	@RequestMapping(value="/createpo" ,  method = RequestMethod.POST)
+	public ResponseEntity<?> createPo( @RequestBody List<PoItem> itemList ) {
 
 		int maxValue=000;
 		double totalAmt=0;
 		
 		Max max=maxServicePri.findByid(1);
 		maxValue=max.getMaxValue();
-		
 		max.setMaxValue(maxValue+1);
 		maxServicePri.update(max);
 		
-		for (PoItem poitem : list) {
-
+		if(GlobalVariables.cloudFlag) { maxServiceSec.update(max);}
+		
+		for (PoItem poitem : itemList) {
 			poitem.setPoId(maxValue);
 			poitem.setFlagStatus(0);			
 			poitem.setCreatedUsercode(1);	
-			
 			totalAmt+=poitem.getAmount();
-			
-			poItemServicePri.save(poitem);
-			
-			if(GlobalVariables.cloudFlag) {  poItemServiceSec.save(poitem); }
+		//	poItemServicePri.save(poitem); //	if(GlobalVariables.cloudFlag) {  poItemServiceSec.save(poitem); }
 		}
-		
 		Po po =new Po();
 		po.setId(maxValue);
 		po.setAmount(totalAmt);
-		po.setFlagStatus(0);			
+		po.setFlagStatus(0);	
+		po.setPoItem(itemList);
 		po.setCreatedUsercode(1);	
 		
 		logger.info("Creating Po	: {} ",po);
-		
 		poServicePri.save(po);
-		poServiceSec.save(po);
+		if(GlobalVariables.cloudFlag) { poServiceSec.save(po);}
 		
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
 	
+	@RequestMapping(value="/updatepo" ,  method = RequestMethod.PUT)
+	public ResponseEntity<?> updatePo( @RequestBody List<PoItem> itemList ) {
 
+		double totalAmt=0;
+		for (PoItem poitem : itemList) {
+			poitem.setFlagStatus(0);			
+			poitem.setModifiedUsercode(1);	
+			totalAmt+=poitem.getAmount();
+		}
+
+		Po po =new Po();
+		po.setId(itemList.get(0).getPoId());
+		po.setAmount(totalAmt);
+		po.setFlagStatus(0);	
+		po.setPoItem(itemList);
+		po.setModifiedUsercode(1);	
 		
+		logger.info("Creating Po	: {} ",po);
+		
+		poServicePri.save(po);
+		if(GlobalVariables.cloudFlag) { poServiceSec.save(po);}
+		
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/removepo/{id}" , method = RequestMethod.DELETE)
+	public ResponseEntity<?> removePo(@PathVariable("id") int id) {
+		
+		 logger.info("Updating Item with id {}", id);		 
+		 Po currentPo = poServicePri.findByid(id);
+		 
+	     if (currentPo == null) {
+	          logger.error("Unable to update. Item with id {} not found.", id);
+	          return new ResponseEntity(new CustomErrorType("Unable to update. Item with id " + id + " not found."),HttpStatus.NOT_FOUND);
+	     }
+	 	     
+	     currentPo.setFlagStatus(2);		
+	     currentPo.setModifiedUsercode(1);
+		 
+	     poServicePri.update(currentPo);
+	     if(GlobalVariables.cloudFlag) { poServiceSec.update(currentPo);	}
+	        
+	     return new ResponseEntity<Po>(currentPo, HttpStatus.OK);
+	}
+	
 }
