@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: AngularSpring
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: webteam
+Implementation-Vendor-Id: org.pace
+Build-Jdk: 1.8.0_191
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/AngularSpring
+Created-By: Maven Integration for Eclipse
+
