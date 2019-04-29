@@ -87,6 +87,7 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 		Service.postService('create'+ctrlName,data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' created successfully');
+				Service.toast('success','Created successfully');
 				self.getData(ctrlName1+"list");						
 				scope.dynamicData=[];
 				scope.dataForm.$setPristine();
@@ -101,6 +102,7 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 		Service.putService('update'+ctrlName+'/',data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Updated successfully');
+				Service.toast('success','Updated successfully');
 				self.getData(ctrlName1+'list');						
 				scope.dynamicData=[];
 				scope.dataForm.$setPristine();
@@ -115,6 +117,7 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 		Service.removeService('remove'+ctrlName+'/'+id,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Removed successfully');
+				Service.toast('success','Removed successfully');
 				self.getData(ctrlName1+'list');						
 				scope.dataForm.$setPristine();
 				self.closeModal();
@@ -130,7 +133,6 @@ app.controller('poController',[ 'Service','GlobData', '$scope','$compile', funct
 	}
 	
 	function addModal(){
-		
 		scope.dynamicData=[];
 		var title=ctrlName.toUpperCase()+' ADD';
     	Service.modalService('addedit','modal',0,'modal-fluid','green lighten-1 align-middle p-2',title,true);

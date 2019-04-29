@@ -113,6 +113,7 @@ app.controller('categoryController',[ 'Service','GlobData','$scope','$compile', 
 		Service.postService('create'+ctrlName,data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' created successfully');
+				Service.toast('success','Created successfully');
 				self.getData(ctrlName+"list");						
 				self.data={};
 				scope.dataForm.$setPristine();
@@ -120,6 +121,7 @@ app.controller('categoryController',[ 'Service','GlobData','$scope','$compile', 
 			},
 			function (errResponse){
 				log(1,'Error while creating '+ctrlName);
+				Service.toast('error','Creation Failed');
 			}
 		)		
 	}
@@ -129,6 +131,7 @@ app.controller('categoryController',[ 'Service','GlobData','$scope','$compile', 
 		Service.putService('update'+ctrlName+'/'+data.categoryId,data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Updated successfully');
+				Service.toast('success','Updated successfully');
 				self.getData(ctrlName+'list');						
 				self.data={};
 				scope.dataForm.$setPristine();
@@ -136,6 +139,7 @@ app.controller('categoryController',[ 'Service','GlobData','$scope','$compile', 
 			},
 			function (errResponse){
 				log(1,'Error while updating '+ctrlName);
+				Service.toast('error','Updation Failed');
 			}
 		)		
 	}
@@ -143,6 +147,7 @@ app.controller('categoryController',[ 'Service','GlobData','$scope','$compile', 
 		Service.removeService('remove'+ctrlName+'/'+id,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Removed successfully');
+				Service.toast('success','Removed successfully');
 				self.getData(ctrlName+'list');						
 				self.data={};
 				scope.dataForm.$setPristine();
@@ -150,6 +155,7 @@ app.controller('categoryController',[ 'Service','GlobData','$scope','$compile', 
 			},
 			function (errResponse){
 				log(1,'Error while Removing '+ctrlName);
+				Service.toast('error','Deletion Failed');
 			}
 		)		
 	}
@@ -267,6 +273,7 @@ app.controller('itemController',[ 'Service','GlobData', '$scope','$compile', fun
 		Service.postService('create'+ctrlName,data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' created successfully');
+				Service.toast('success','Created successfully');
 				self.getData(ctrlName+"list");						
 				self.data={};
 				scope.dataForm.$setPristine();
@@ -274,6 +281,7 @@ app.controller('itemController',[ 'Service','GlobData', '$scope','$compile', fun
 			},
 			function (errResponse){
 				log(1,'Error while creating '+ctrlName);
+				Service.toast('error','Creation Failed');
 			}
 		)		
 	}
@@ -281,6 +289,7 @@ app.controller('itemController',[ 'Service','GlobData', '$scope','$compile', fun
 		Service.putService('update'+ctrlName+'/'+data.categoryId,data,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Updated successfully');
+				Service.toast('success','Updated successfully');
 				self.getData(ctrlName+'list');						
 				self.data={};
 				scope.dataForm.$setPristine();
@@ -288,6 +297,7 @@ app.controller('itemController',[ 'Service','GlobData', '$scope','$compile', fun
 			},
 			function (errResponse){
 				log(1,'Error while updating '+ctrlName);
+				Service.toast('error','Updation Failed');
 			}
 		)		
 	}
@@ -295,6 +305,7 @@ app.controller('itemController',[ 'Service','GlobData', '$scope','$compile', fun
 		Service.removeService('remove'+ctrlName+'/'+id,ctrlName+'list').then(
 			function(response){
 				log(0,ctrlName+' Removed successfully');
+				Service.toast('success','Removed successfully');
 				self.getData(ctrlName+'list');						
 				self.data={};
 				scope.dataForm.$setPristine();
@@ -302,6 +313,7 @@ app.controller('itemController',[ 'Service','GlobData', '$scope','$compile', fun
 			},
 			function (errResponse){
 				log(1,'Error while Removing '+ctrlName);
+				Service.toast('error','Deletion Failed');
 			}
 		)		
 	}

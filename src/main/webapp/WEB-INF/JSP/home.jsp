@@ -8,7 +8,8 @@
   		<link href="css/bootstrap.min.css" rel="stylesheet">
   		<link href="css/mdb.min.css" rel="stylesheet">
   		<link href="css/datatables.min.css" rel="stylesheet">
- 		<link href="css/style.css" rel="stylesheet">
+  		<link href="css/style.css" rel="stylesheet">
+ 		<link href="css/toastr.min.css" rel="stylesheet">
  		
 </head>
 <body ng-cloak data-ng-controller="homeController as ctrl" >
@@ -84,6 +85,7 @@
       </div>
 </script> 	
         <script type="text/javascript" src="js/lib/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/lib/toastr.min.js"></script>
  		<script type="text/javascript" src="js/lib/popper.min.js"></script>
  	 	<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/lib/mdb.min.js"></script>

@@ -17,7 +17,8 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
                 removeService : removeService,
                 logService : logService,
                 modalService : modalService,
-                confirmService:confirmService
+                confirmService:confirmService,
+                toast:toastrService
             };
          
             return factory;
@@ -146,6 +147,28 @@ app.factory('Service',['$localStorage', '$http', '$q', 'urls', 'GlobData',
             		);
             	return deferred.promise;
             }  
+            
+           function toastrService(type,msg){
+        	   
+       		toastr.options = {
+       				"closeButton" : false,
+       				"debug" : false,
+       				"newestOnTop" : true,
+       				"progressBar" : true,
+       				"positionClass" : "toast-bottom-left",
+       				"preventDuplicates" : false,
+       				"onclick" : null,
+       				"showDuration" : 100,
+       				"hideDuration" : 1000,
+       				"timeOut" : 2000,
+       				"extendedTimeOut" : 1000,
+       				"showEasing" : "swing",
+       				"hideEasing" : "linear",
+       				"showMethod" : "fadeIn",
+       				"hideMethod" : "fadeOut"
+       			};
+        	   toastr[type](msg) ;
+           }
             
               
 }]);
