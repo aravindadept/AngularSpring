@@ -6,6 +6,8 @@ import org.pace.model.Category;
 import org.pace.repositories.primary.CategoryRepoPri;
 import org.pace.service.primary.CategoryServicePri;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,10 @@ public class CategoryServiceImplPri implements CategoryServicePri {
     
     public List<Category> findAll(){
     	return categoryRepoPri.findAll();
+    }
+    
+    public Page<Category> findByPageSize(Pageable pageable){
+    	return categoryRepoPri.findAll(pageable);
     }
 
 	public void save(Category data) {

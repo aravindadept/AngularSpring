@@ -12,6 +12,9 @@ import org.pace.model.*;
 import org.pace.service.primary.*;
 import org.pace.service.secondary.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +87,14 @@ public class ApiController {
 	public List<Category>  category() {
 		
 		return categoryServicePri.findAll();
+	}
+	
+	@RequestMapping(value="/categorypage" , method = RequestMethod.GET )
+	public List<Category>  categoryPage(@PageableDefault(value=10, page=0) Pageable pageable) {
+		
+		Page<Category> page = categoryServicePri.findByPageSize(pageable);
+	    return page.getContent();
+	    
 	}
 	
 	@RequestMapping(value="/categoryid/{id}" , method = RequestMethod.GET )

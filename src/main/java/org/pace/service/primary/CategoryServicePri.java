@@ -3,6 +3,8 @@ package org.pace.service.primary;
 import java.util.List;
 
 import org.pace.model.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoryServicePri {
 	
@@ -13,4 +15,6 @@ public interface CategoryServicePri {
 	 void update(Category data);
 	 
 	 List<Category> findAll();
+	 
+	 Page<Category> findByPageSize(Pageable pageable);
 }
