@@ -1,16 +1,30 @@
 package org.pace.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.pace.configuration.GlobalVariables;
+import org.pace.custom.CustomErrorType;
+import org.pace.model.Category;
+import org.pace.model.Item;
+import org.pace.model.Max;
+import org.pace.model.Po;
+import org.pace.model.PoItem;
+import org.pace.model.UserInfo;
+import org.pace.service.primary.CategoryServicePri;
+import org.pace.service.primary.ItemServicePri;
+import org.pace.service.primary.MaxServicePri;
+import org.pace.service.primary.PoItemServicePri;
+import org.pace.service.primary.PoServicePri;
+import org.pace.service.primary.UserInfoServicePri;
+import org.pace.service.secondary.CategoryServiceSec;
+import org.pace.service.secondary.ItemServiceSec;
+import org.pace.service.secondary.MaxServiceSec;
+import org.pace.service.secondary.PoItemServiceSec;
+import org.pace.service.secondary.PoServiceSec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.pace.configuration.GlobalVariables;
-import org.pace.model.*;
-import org.pace.service.primary.*;
-import org.pace.service.secondary.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,15 +32,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.pace.custom.CustomErrorType;
 
 @RestController
 @RequestMapping(value="/api")
@@ -94,6 +105,8 @@ public class ApiController {
 		
 		Page<Category> page = categoryServicePri.findByPageSize(pageable);
 	    return page.getContent();
+	    
+	    
 	    
 	}
 	
